@@ -51,7 +51,7 @@ mask = cv2.imread(mask_path)
 # the separate line
 line = [linex1, liney1, linex2, liney2]
 
-class_names = ['moto', 'car', 'truck', 'bus', 'bycycle']
+class_names = ['car', 'moto', 'truck', 'bus', 'bycycle']
 
 
 alpha = 20 # distance from the line to the object
