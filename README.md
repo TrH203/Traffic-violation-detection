@@ -10,9 +10,9 @@ Project Structure
 ### 1. Models Used
 I employ three YOLOv5 models for different aspects of traffic violation detection:
 
-- [Model 1 Name]: Brief description
-- [Model 2 Name]: Brief description
-- [Model 3 Name]: Brief description
+- [Vehicle detection]: Use to detect Vehicle
+- [Plate detection]: From Vehicle then extract plate 
+- [Number Plate detection]: From plate then extract number in plate
 ### 2. How it works ?
 
 We implement **yolov5** to train all of these 3 model to solve each problem.
