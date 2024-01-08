@@ -24,7 +24,8 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from skimage import io
-
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 import glob
 import time
 import argparse
