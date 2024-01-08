@@ -85,3 +85,5 @@ python3.7 yolo-detect.py
 View my data in Kaggle now : https://www.kaggle.com/hienhoangtrong/datasets
 
 
+### Weight
+helmet: https://drive.google.com/file/d/1JI9Gk-mjYQEf9K27XGWDeeyWR81TAj6c/view?usp=sharing
