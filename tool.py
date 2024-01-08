@@ -1,5 +1,7 @@
 import cv2
 import numpy
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 def rotate_and_crop(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)

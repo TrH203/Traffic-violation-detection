@@ -3,6 +3,8 @@ import numpy as np
 from process import Process
 import yolov5
 from tool import rotate_and_crop
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 def convert_to_list(l):
     for i in range(len(l) - 1):
         for j in range(i,len(l)):
