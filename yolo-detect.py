@@ -147,11 +147,12 @@ while True:
     for result in rs2:
         helmet = 0
         boxes = result.boxes.cpu().numpy()
+        conf = result.boxes.conf.numpy()
         r = boxes.xyxy
         class_label = boxes.cls
-        for box, label in zip(r, class_label):
+        for box, label,conf in zip(r, class_label,conf):
             x1, y1, x2, y2 = box.astype(int)
-            if label == 0:
+            if label == 1 and conf > 0.7: #label 1 = no helmet, label 0 = helmet, conf = confidence of boxes
                 # print(x1)
                 crop = img[y1-50:y2 * 3, x1:x2+50]
                 if crop.size == 0:
