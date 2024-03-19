@@ -6,8 +6,7 @@ from tool import convert_to_list, rotate_and_crop
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 # from tensorflow.keras.models import load_model
-
-
+from workWithDatabase import DatabaseConnector;
 class Process():
     def __init__(self,save_path) -> None:
         self.save_path = save_path
@@ -74,8 +73,8 @@ class Process():
 
             img = rotate_and_crop(img)
             class_names = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'K',
-                           'L', 'M', 'N', 'P',
-                           'S', 'T', 'U', 'V', 'X', 'Y', 'Z', '0']
+                            'L', 'M', 'N', 'P',
+                            'S', 'T', 'U', 'V', 'X', 'Y', 'Z', '0']
 
             # Resize help model more efficiently
             if img.shape[0] > 100 and img.shape[1] > 100:
@@ -104,3 +103,4 @@ class Process():
 
         with open(os.path.join(self.save_path, f"plate_number{self.id}.txt"), "a") as f:
             f.write(str(rs))
+            

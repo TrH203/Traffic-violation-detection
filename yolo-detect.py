@@ -90,11 +90,11 @@ cv2.setMouseCallback('Image', draw)
 while True:
     success, img = cap.read()
     masked_img = cv2.bitwise_and(img, mask)
-    rs = model(masked_img)  # use model
-    rs2 = model2(masked_img)
-    ano = rs2[0].plot()
+    rs = model(masked_img)  # use model # vihecle detect
+    rs2 = model2(masked_img) # helmet detect
+    ano = rs2[0].plot() # plot helmet detect
     predictions = rs.pred[0]
-    print(line)
+    # print(line)
     detections = np.empty((0, 5))  # init detections for tracking - 5th index is class
 
     list_names = []  # init list names for tracking
