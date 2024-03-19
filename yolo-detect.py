@@ -166,7 +166,7 @@ while True:
             if label == 0 and conf > 0.5: #label 1 = no helmet, label 0 = helmet, conf = confidence of boxes
                 # print(x1)
 
-                x1, y1, x2, y2,id2 = box.astype(int)
+                x1, y1, x2, y2,id = box.astype(int)
                 helmet += 1
 
                 crop = img[y1:y2, x1:x2]
@@ -175,12 +175,12 @@ while True:
                 else:
                     # Save the cropped image as JPEG
                     # cv2.imwrite("output_data/helmet{}.jpg".format(helmet), crop)  # save the crop
-                    if id2 not in track_list2:
-                        track_list2.append(id)
-                        new_img = P.save_image(img, id2, x1, y1, x2, y2)  # save image
-                    if new_img is not None:
-                        img_dect = P.plate_detection(new_img)
-                        P.number_plate_extract(img_dect)
+                    if id not in track_list:
+                        track_list.append(id)
+                        new_img = P.save_image(img, id, x1, y1, x2, y2)  # save image
+                        if new_img is not None:
+                            img_dect = P.plate_detection(new_img)
+                            P.number_plate_extract(img_dect)
                     else:
                         continue
 
