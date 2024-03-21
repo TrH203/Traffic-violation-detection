@@ -36,6 +36,7 @@ save_image_path = conf.get("destination", "save_image")
 # get graphic setting
 show_vehicle_detect = conf.getboolean("graphic_setting", "show_vehicle_detect")
 show_tracking = conf.getboolean("graphic_setting", "show_tracking")
+show_helmet = conf.getboolean("graphic_setting", "show_helmet")
 
 """--------------------- END --------------------------"""
 
@@ -159,8 +160,14 @@ while True:
         conf = result.boxes.conf.numpy()
         r = boxes.xyxy
         class_label = boxes.cls
-        for box, label,conf in zip(tracker_rs, class_label,conf):
-            if label == 1 and conf > 0.7: #label 1 = no helmet, label 0 = helmet, conf = confidence of boxes
+        for box, label_index,conf,helmet in zip(tracker_rs, class_label,conf,r):
+            if show_helmet:
+                label_index = label_index.astype(int)
+                xh1, yh1, xh2, yh2 = helmet.astype(int)
+                cv2.rectangle(img, (xh1, yh1), (xh2, yh2), (255, 0, 255), 2)
+                label = ["helmet","no helmet"]
+                cv2.putText(img, f'{label[label_index]}-{conf}', (xh1, yh1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            if label_index == 1 and conf > 0.7: #label 1 = no helmet, label 0 = helmet, conf = confidence of boxes
                 # print(x1)
 
                 x1, y1, x2, y2,id = box.astype(int)
