@@ -164,7 +164,7 @@ while True:
             if show_helmet:
                 label_index = label_index.astype(int)
                 xh1, yh1, xh2, yh2 = helmet.astype(int)
-                cv2.rectangle(img, (xh1, yh1), (xh2, yh2), (255, 0, 255), 2)
+                cv2.rectangle(img, (xh1, yh1), (xh2, yh2), (255, 255, 0), 2)
                 label = ["helmet","no helmet"]
                 cv2.putText(img, f'{label[label_index]}-{conf}', (xh1, yh1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             if label_index == 1 and conf > 0.7: #label 1 = no helmet, label 0 = helmet, conf = confidence of boxes
