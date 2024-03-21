@@ -25,10 +25,10 @@ video = conf.get("load_video", "video")
 mask_path = conf.get("load_mask", "mask")
 
 # line separate
-# linex1 = conf.getint("init_line", "linex1")
-# liney1 = conf.getint("init_line", "liney1")
-# linex2 = conf.getint("init_line", "linex2")
-# liney2 = conf.getint("init_line", "liney2")
+linex1 = conf.getint("init_line", "linex1")
+liney1 = conf.getint("init_line", "liney1")
+linex2 = conf.getint("init_line", "linex2")
+liney2 = conf.getint("init_line", "liney2")
 
 # destination of result images
 save_image_path = conf.get("destination", "save_image")
@@ -36,6 +36,7 @@ save_image_path = conf.get("destination", "save_image")
 # get graphic setting
 show_vehicle_detect = conf.getboolean("graphic_setting", "show_vehicle_detect")
 show_tracking = conf.getboolean("graphic_setting", "show_tracking")
+show_helmet = conf.getboolean("graphic_setting", "show_helmet")
 
 """--------------------- END --------------------------"""
 
@@ -47,7 +48,7 @@ cap = cv2.VideoCapture(video)
 mask = cv2.imread(mask_path)
 
 # the separate line
-# line = [linex1, liney1, linex2, liney2]
+line = [linex1, liney1, linex2, liney2]
 
 class_names = ['car', 'moto', 'truck', 'bus', 'bycycle']
 
@@ -64,25 +65,22 @@ P.load_number_plate_picture(model_plate_detect)
 P.load_number_plate(model_plate_number_detect)
 
 
-drawing = False
 line_start = (-1, -1)
 line_end = (-1, -1)
-lines = []
-line = [0,0,0,0]
+# line = [0,0,0,0]
 def draw(event, x, y, flags, param):
-    global drawing, line_start, lines, canvas, line_end, line
+    global drawing, line_start, canvas, line_end, line
 
     if event == cv2.EVENT_LBUTTONDOWN:
+        line = [0,0,0,0]
         drawing = True
         line_start = (x, y)
 
     elif event == cv2.EVENT_LBUTTONUP:
         drawing = False
         line_end = (x, y)
-        lines.append([line_start[0], line_start[1], line_end[0], line_end[1]])
-        cv2.line(canvas, line_start, line_end, (0, 255, 0), 2)
-        print("Line drawn from ({}, {}) to ({}, {})".format(line_start[0], line_start[1], line_end[0], line_end[1]))
         line = [line_start[0], line_start[1], line_end[0], line_end[1]]
+        print("Line drawn from ({}, {}) to ({}, {})".format(line_start[0], line_start[1], line_end[0], line_end[1]))
         return line
 cv2.namedWindow('Image')
 cv2.setMouseCallback('Image', draw)
@@ -162,8 +160,14 @@ while True:
         conf = result.boxes.conf.numpy()
         r = boxes.xyxy
         class_label = boxes.cls
-        for box, label,conf in zip(tracker_rs, class_label,conf):
-            if label == 0 and conf > 0.5: #label 1 = no helmet, label 0 = helmet, conf = confidence of boxes
+        for box, label_index,conf,helmet in zip(tracker_rs, class_label,conf,r):
+            if show_helmet:
+                label_index = label_index.astype(int)
+                xh1, yh1, xh2, yh2 = helmet.astype(int)
+                cv2.rectangle(img, (xh1, yh1), (xh2, yh2), (255, 255, 0), 2)
+                label = ["helmet","no helmet"]
+                cv2.putText(img, f'{label[label_index]}-{conf}', (xh1, yh1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            if label_index == 1 and conf > 0.7: #label 1 = no helmet, label 0 = helmet, conf = confidence of boxes
                 # print(x1)
 
                 x1, y1, x2, y2,id = box.astype(int)
@@ -185,22 +189,11 @@ while True:
                         continue
 
 
-
-    canvas = img.copy()
-
-    for line in lines:
-        cv2.line(canvas, (line[0], line[1]), (line[2], line[3]), (0, 255, 0), 2)
-
-    if drawing:
-        cv2.line(canvas, line_start, line_end, (0, 255, 0), 2)
-    result = cv2.addWeighted(img, 1, canvas, 0.5, 0)
-    stacked = cv2.hconcat([img, result])
-    cv2.imshow("Image", stacked)
+    cv2.imshow("Image", img)
     k = cv2.waitKey(5)
 
     if k == ord('c'):
-        canvas = img.copy()
-        lines = []
+        img
 
     elif k == 27:
         break
