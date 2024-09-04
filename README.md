@@ -13,8 +13,10 @@ This scientific research project, conducted at Duy Tan University (DTU), aims to
 <p align="center">
   <img width="960" alt="Project Screenshot" src="https://github.com/TrH203/Traffic-violation-detection/assets/96675314/b945dfbd-220b-40c4-a162-bb4f988d5d5e">
 </p>
-## Youtube Demo
+
+### Youtube Demo
 Link: https://youtu.be/ddhAg65acd0
+
 ## Project Structure
 
 ### Models Used
